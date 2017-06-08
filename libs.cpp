@@ -24,7 +24,7 @@ unsigned int check_symbols(const std::string &str)
     unsigned int i = 0;
     for (; i < str.size(); i++) {
         if (!is_operator(str[i]) &&
-            !isalnum(str[i]) &&
+            !isalnum(str[i]) && !isspace(str[i]) &&
             str[i] != '_' && str[i] != '.' && str[i] != ',' &&
             str[i] != '(' && str[i] != ')') {
             break;
@@ -53,20 +53,20 @@ mathElement getStrElement(const std::string &inStr, unsigned int index)
         element.str.push_back(inStr[index]);
         element.i_start = index;
         element.i_end = index;
+        index++;
 
         for (; index < inStr.size(); index++) {
             if (isalnum(inStr[index]) || inStr[index] == '_') {
                 element.str.push_back(inStr[index]);
                 element.i_end = index;
             }
-            else {
-                if (is_math_function(element.str))
-                    element.type_t = math_t;
-                else
-                    element.type_t = variable_t;
-                break;
-            }
+            else break;
         }
+        
+        if (is_math_function(element.str))
+            element.type_t = math_t;
+        else
+            element.type_t = variable_t;
     }
     else if (inStr[index] == '(') {
 
@@ -78,22 +78,18 @@ mathElement getStrElement(const std::string &inStr, unsigned int index)
         for (; index < inStr.size(); index++) {
             if (inStr[index] == ')') {
                 b--;
-                if (b == 0)
-                    break;
+                if (b == 0) break;
             }
-            if (b < 0)
-                break;
+            if (b < 0) break;
 
             if (b > 0) {
                 element.str.push_back(inStr[index]);
-                if (len == 0)
-                    element.i_start = index;
+                if (len == 0) element.i_start = index;
                 element.i_end = index;
                 len++;
             }
 
-            if (inStr[index] == '(')
-                b++;
+            if (inStr[index] == '(') b++;
         }
         if (b != 0)
             element.error = true;
@@ -106,14 +102,14 @@ mathElement getStrElement(const std::string &inStr, unsigned int index)
         element.str.push_back(inStr[index]);
         element.i_start = index;
         element.i_end = index;
-
+        index++;
+        
         for (; index < inStr.size(); index++) {
             if (isdigit(inStr[index]) || inStr[index] == '.' || inStr[index] == ',') {
                 element.str.push_back(inStr[index]);
                 element.i_end = index;
             }
-            else
-                break;
+            else break;
         }
 
         unsigned int lenDot = 0;
@@ -156,11 +152,8 @@ bool is_math_function(const std::string &str)
     else if (str.compare("cos") == 0) {
         status = true;
     }
-    else {
-        status = false;
-    }
 
-    return false;
+    return status;
 }
 
 bool is_operator(const char &ch)

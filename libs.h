@@ -22,7 +22,7 @@ struct mathElement {
 };
 
 // Проверка скобок
-bool check_symbols(const std::string &str);
+bool check_brackets(const std::string &str);
 
 // Проверка символов в формуле, возвращает размер строки при успешной проверке,
 // или индекс неправильного символа
