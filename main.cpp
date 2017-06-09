@@ -1,7 +1,6 @@
 #include "libs.h"
 #include <cstdio>
 #include <cstdlib>
-#include <cstdlib>
 #include <iostream>
 #include <list>
 #include <string>
