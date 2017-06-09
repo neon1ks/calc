@@ -1,8 +1,10 @@
 #ifndef CALC_LIBS_H
 #define CALC_LIBS_H
 
+#include <cmath>
 #include <cstdlib>
 #include <list>
+#include <map>
 #include <string>
 
 struct varElementType {
@@ -29,6 +31,16 @@ struct mathElement {
     double number;
     std::list<mathElement> childList;
 };
+
+// clang-format off
+const std::map<std::string, double (*)(double)> functionMap {
+    {"sin", sin},
+    {"cos", cos},
+    {"tan", tan},
+    {"lg",  log10},
+    {"ln",  log}
+};
+// clang-format on
 
 // Проверка скобок
 bool check_brackets(const std::string &str);

@@ -1,12 +1,11 @@
 #include "libs.h"
 #include <cctype>
-#include <cmath>
 
 static std::list<varElementType> varList;
 
 void add_in_var_list(const std::string varStr);
 
-double calc_function(const std::string &funcStr, const double &number);
+double calc_function(const std::string &funcStr, double number);
 
 bool is_begin_number(const int ch);
 
@@ -176,25 +175,7 @@ mathElement getMathElement(const std::string &inStr, unsigned int index, mathEle
 
 bool is_math_function(const std::string &str)
 {
-    bool status = false;
-
-    if (str.compare("sin") == 0) {
-        status = true;
-    }
-    else if (str.compare("cos") == 0) {
-        status = true;
-    }
-    else if (str.compare("tan") == 0) {
-        status = true;
-    }
-    else if (str.compare("lg") == 0) {
-        status = true;
-    }
-    else if (str.compare("ln") == 0) {
-        status = true;
-    }
-
-    return status;
+    return functionMap.find(str) != functionMap.end();
 }
 
 bool is_operator(const int ch)
@@ -417,27 +398,9 @@ std::list<mathElement> calculationMath(std::list<mathElement> &mathList)
     return mathList;
 }
 
-double calc_function(const std::string &funcStr, const double &number)
+double calc_function(const std::string &funcStr, double number)
 {
-    double d;
-
-    if (funcStr.compare("sin") == 0) {
-        d = sin(number);
-    }
-    else if (funcStr.compare("cos") == 0) {
-        d = cos(number);
-    }
-    else if (funcStr.compare("tan") == 0) {
-        d = tan(number);
-    }
-    else if (funcStr.compare("lg") == 0) {
-        d = log10(number);
-    }
-    else if (funcStr.compare("ln") == 0) {
-        d = log(number);
-    }
-
-    return d;
+    return functionMap.at(funcStr)(number);
 }
 
 bool is_begin_number(const int ch)
